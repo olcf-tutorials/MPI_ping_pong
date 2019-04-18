@@ -1,2 +1,5 @@
 pp*
 *.o
+cpu_ping_pong*
+staged_ping_pong*
+cuda_aware_ping_pong*

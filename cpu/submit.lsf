@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#BSUB -P STF007
+#BSUB -W 10
+#BSUB -nnodes 1
+#BSUB -J cpu_ping_pong
+#BSUB -o cpu_ping_pong.%J
+#BSUB -e cpu_ping_pong.%J
+
+jsrun -n1 -c42 -g6 -a2 ./pp

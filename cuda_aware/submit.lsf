@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#BSUB -P STF007
+#BSUB -W 10
+#BSUB -nnodes 1
+#BSUB -J cuda_aware_ping_pong
+#BSUB -o cuda_aware_ping_pong.%J
+#BSUB -e cuda_aware_ping_pong.%J
+
+jsrun --smpiargs="-gpu" -n1 -c42 -g6 -a2 ./pp_cuda_aware
