@@ -53,9 +53,9 @@ Next, we enter our main `for` loop, where each iteration of the loop performs da
 We then initialize the array `A`, set some tags to match MPI Send/Receive pairs, set `loop_count` (used later), and run a warm-up loop 5 times to remove any MPI setup costs:
 
 ``` c
-        // Initialize all elements of A to 0.0
+        // Initialize all elements of A to random values
         for(int i=0; i<N; i++){
-            A[i] = 0.0;
+            A[i] = (double)rand()/(double)RAND_MAX;
         }
 
         int tag1 = 10;
@@ -208,7 +208,9 @@ Similar to the CPU-only version, just inside `main`, we initialize MPI and find 
     }
 
     // Map MPI ranks to GPUs
-    cudaErrorCheck( cudaSetDevice(rank) );
+    int num_devices = 0;
+    cudaErrorCheck( cudaGetDeviceCount(&num_devices) );
+    cudaErrorCheck( cudaSetDevice(rank % num_devices) );
 ```
 Next, we do roughly the same as we did in the CPU-only version: enter our main `for` loop that iterates over the different message sizes, allocate and intialize array `A`, and run our warm-up loop. However, we now have a call to `cudaMalloc` to allocate a memory buffer (`d_A`) on the GPUs and a call to `cudaMemcpy` to transfer the data initialized in array `A` to the GPU array (buffer) `d_A`. The `cudaMemcpy` was needed to get the data to the GPU before starting our ping pong. 
 
