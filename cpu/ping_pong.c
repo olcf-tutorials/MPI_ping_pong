@@ -36,11 +36,11 @@ int main(int argc, char *argv[])
    	 	// Allocate memory for A on CPU
 		double *A = (double*)malloc(N*sizeof(double));
 
-		// Initialize all elements of A to 0.0
-		for(int i=0; i<N; i++){
-			A[i] = 0.0;
-		}
-	
+        // Initialize all elements of A to random values
+        for(int i=0; i<N; i++){
+            A[i] = (double)rand()/(double)RAND_MAX;
+        }
+
 		int tag1 = 10;
 		int tag2 = 20;
 	

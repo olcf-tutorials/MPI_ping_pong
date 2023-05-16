@@ -36,8 +36,10 @@ int main(int argc, char *argv[])
 		exit(0);
 	}
 
-	// Map MPI ranks to GPUs
-	cudaErrorCheck( cudaSetDevice(rank) );
+    // Map MPI ranks to GPUs
+    int num_devices = 0;
+    cudaErrorCheck( cudaGetDeviceCount(&num_devices) );
+    cudaErrorCheck( cudaSetDevice(rank % num_devices) );
 
 	/* -------------------------------------------------------------------------------------------
 		Loop from 8 B to 1 GB
@@ -50,10 +52,10 @@ int main(int argc, char *argv[])
 		// Allocate memory for A on CPU
 		double *A = (double*)malloc(N*sizeof(double));
 
-		// Initialize all elements of A to 0.0
-		for(int i=0; i<N; i++){
-			A[i] = 0.0;
-		}
+        // Initialize all elements of A to random values
+        for(int i=0; i<N; i++){
+            A[i] = (double)rand()/(double)RAND_MAX;
+        }
 
 		double *d_A;
 		cudaErrorCheck( cudaMalloc(&d_A, N*sizeof(double)) );
